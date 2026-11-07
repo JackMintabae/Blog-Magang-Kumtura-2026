@@ -1,0 +1,789 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+// 14 Kolom Grid Kontribusi GitHub (Sesuai Screenshot Referensi: 4 Baris x 14 Kolom)
+const gitGridColumns = [
+  [1, 1, 0, 3],
+  [0, 0, 0, 2],
+  [2, 0, 3, 0],
+  [3, 2, 0, 1],
+  [0, 0, 2, 3],
+  [1, 0, 0, 0],
+  [0, 2, 0, 1],
+  [3, 0, 3, 0],
+  [0, 1, 0, 3],
+  [1, 0, 2, 0],
+  [0, 3, 0, 1],
+  [3, 2, 0, 2],
+  [1, 0, 1, 0],
+  [0, 0, 3, 3],
+];
+---
+
+<BaseLayout
+  title="Jack Ronaldo Mintabae - UI/UX Design Chronicles"
+  description="Catatan personal dan dokumentasi perjalanan magang UI/UX Designer & Digital Content Specialist di Kumtura Digital Solutions."
+  containerClass="max-w-2xl lg:max-w-5xl xl:max-w-6xl"
+>
+  <!-- Two-Column Grid: Left Column Main Content + Right Column Popular Posts (Matching Blogspot Reference) -->
+  <div class="lg:grid lg:grid-cols-[1fr_310px] xl:grid-cols-[1fr_340px] lg:gap-12 xl:gap-16 items-start">
+    
+    <!-- Left Column: Existing Homepage Content (100% Unchanged) -->
+    <div class="space-y-10 min-w-0">
+    
+    <!-- Top Header Profile Section (Matching Screenshot) -->
+    <header class="flex items-center justify-between pb-6">
+      <!-- Profile Info -->
+      <div class="flex items-center gap-3.5">
+        <!-- Interactive Avatar with Sound & Large Pop-out on Hover -->
+        <div class="relative group/avatar" data-sound-hover="pop">
+          <button
+            type="button"
+            class="w-12 h-12 rounded-xl overflow-hidden bg-gradient-to-tr from-sky-500 to-indigo-600 p-[2px] shadow-sm hover:scale-105 active:scale-95 transition cursor-pointer focus:outline-none block"
+            data-sound="pop"
+            title="Arahkan kursor atau klik foto profil untuk efek suara pop!"
+            aria-label="Foto Profil"
+          >
+            <img
+              src="/avatar.png"
+              alt="Foto Profil Jack Ronaldo Mintabae"
+              class="w-full h-full object-cover rounded-[10px]"
+            />
+          </button>
+
+          <!-- Large Pop-out Photo Card on Hover (Exactly Matching Screenshot) -->
+          <div
+            class="absolute top-0 left-0 w-56 sm:w-64 aspect-square rounded-2xl overflow-hidden border-[3.5px] border-white dark:border-surface-700 shadow-2xl -rotate-2 origin-top-left opacity-0 scale-75 pointer-events-none group-hover/avatar:opacity-100 group-hover/avatar:scale-100 group-hover/avatar:pointer-events-auto transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] z-50 bg-surface-900"
+          >
+            <img
+              src="/avatar.png"
+              alt="Foto Profil Jack Ronaldo Mintabae Besar"
+              class="w-full h-full object-cover select-none"
+            />
+          </div>
+        </div>
+
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-surface-900 dark:text-surface-100 tracking-tight leading-tight">
+            Jack Ronaldo Mintabae
+          </h1>
+          <!-- Realtime Bali Clock -->
+          <div class="text-xs font-mono text-surface-500 dark:text-surface-400 mt-0.5 flex items-center gap-1.5">
+            <span id="bali-live-clock">--:--:-- AM di Bali</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Right Capsule Pills (Audio & Theme Toggles) -->
+      <div class="flex items-center gap-2">
+        <!-- Sound FX Capsule Pill -->
+        <button
+          id="sound-toggle-btn"
+          aria-label="Toggle Audio Sound FX"
+          class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-surface-200 dark:border-surface-800 bg-surface-100/60 dark:bg-surface-900/60 hover:bg-surface-200/60 dark:hover:bg-surface-800/60 text-xs font-mono transition text-surface-700 dark:text-surface-300"
+          title="Toggle Audio UX"
+        >
+          <span id="icon-sound-on" class="flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+            <span class="text-[11px] font-semibold">FX</span>
+          </span>
+          <span id="icon-sound-off" class="hidden text-surface-400 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+            </svg>
+            <span class="text-[11px]">MUTED</span>
+          </span>
+        </button>
+
+        <!-- Theme Capsule Pill (Sun / Moon) -->
+        <button
+          id="theme-toggle-btn"
+          aria-label="Toggle Theme"
+          class="flex items-center gap-1 px-2 py-1 rounded-full border border-surface-200 dark:border-surface-800 bg-surface-100/60 dark:bg-surface-900/60 hover:bg-surface-200/60 dark:hover:bg-surface-800/60 text-xs transition text-surface-600 dark:text-surface-300"
+          data-sound="click"
+          title="Ganti Tema Gelap / Terang"
+        >
+          <!-- Sun Icon (Active in Dark) -->
+          <svg class="w-3.5 h-3.5 text-amber-500 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon Icon (Active in Light) -->
+          <svg class="w-3.5 h-3.5 text-surface-700 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Bio Description Section (Ultra-clean typography like screenshot) -->
+    <section class="space-y-4 text-[15px] sm:text-base leading-relaxed text-surface-700 dark:text-surface-300 pt-3 sm:pt-4">
+      
+      <!-- Paragraph 1 with "Bali" & "hover me" at the far right of the line -->
+      <p class="leading-relaxed">
+        Saya adalah UI/UX Designer & Digital Content Specialist berbasis di 
+        <span class="relative inline-block whitespace-nowrap">
+          <span
+            class="font-bold text-surface-900 dark:text-surface-50 cursor-pointer underline decoration-dotted decoration-surface-400 underline-offset-4 hover:text-brand-600 dark:hover:text-brand-400 transition"
+            data-sound-hover="chime"
+            title="Hover untuk mendengarkan chime audio!"
+          >
+            Bali
+          </span>
+          <!-- Bali island silhouette SVG icon -->
+          <svg class="inline-block w-4 h-3.5 fill-current text-surface-900 dark:text-surface-100 ml-0.5 align-middle -mt-0.5" viewBox="0 0 28 18">
+            <path d="M3 10c2-2 5-3 8-3 3 0 6 1 9 3 2 1 4 2 5 3 1 1 0 2-2 3-2 1-4 1-6 0-1 1-2 2-4 2-2 0-3-1-4-2-1 0-2 1-3 1-1 0-2-1-2-2-1 0-2-1-3-2-1-1-2-2-2-3z M21 16c1 0 1.5-.5 1-1.2s-1.2-.3-1.5.5c-.2.5 0 .7.5.7z"/>
+          </svg><span class="text-surface-900 dark:text-surface-100 font-normal">,</span>
+
+          <!-- Handwritten "hover me" & curved arrow pointing to Bali from the right (never crosses over Bali) -->
+          <span class="absolute -top-7 sm:-top-8 left-full ml-1 sm:ml-2 flex flex-col items-start pointer-events-none select-none z-10">
+            <span class="font-['Caveat'] text-lg sm:text-xl text-surface-500 dark:text-surface-400 italic -rotate-3 whitespace-nowrap pl-3">
+              hover me
+            </span>
+            <svg class="w-10 sm:w-11 h-4 text-surface-400 dark:text-surface-500" viewBox="0 0 44 16" fill="none" stroke="currentColor">
+              <path d="M40 2 C28 2, 14 5, 2 10 M2 10 L8 6 M2 10 L7 14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </span>
+        <br class="hidden sm:inline" />
+        Indonesia yang berfokus pada perancangan antarmuka digital yang intuitif, estetis, dan berpusat pada pengguna (user-centered). Saya berpengalaman dalam menerjemahkan kebutuhan sistem ke dalam wireframe, mockup resolusi tinggi (high-fidelity), purwarupa interaktif di Figma, hingga media komunikasi visual seperti desain carousel promosi dan penayangan portofolio proyek.
+      </p>
+
+      <!-- Paragraph 2 (Catatan Magang di Kumtura) -->
+      <p>
+        Ruang ini berfungsi sebagai catatan desain dan dokumentasi perjalanan saya, termasuk catatan bulanan saya sebagai UI/UX Design Intern di Kumtura Digital Solutions.
+      </p>
+
+      <!-- Paragraph 3 with Interactive Gmail Compose Popover Card on Hover (Using <div> instead of <p> to avoid HTML parser tag-ejection bug) -->
+      <div class="text-surface-600 dark:text-surface-400">
+        Hubungi saya di 
+        <span class="relative inline-block group/email" id="email-hover-trigger">
+          
+          <!-- Gmail Compose Popover Card (Compact & Sleek, Matching Screenshot) -->
+          <div
+            id="email-modal-card"
+            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-[265px] sm:w-[280px] rounded-2xl bg-white dark:bg-[#18181b] border border-surface-200 dark:border-surface-700 shadow-2xl p-3 z-50 opacity-0 scale-95 pointer-events-none group-hover/email:opacity-100 group-hover/email:scale-100 group-hover/email:pointer-events-auto transition-all duration-200 ease-out origin-bottom text-left after:content-[''] after:absolute after:-bottom-4 after:left-0 after:right-0 after:h-4"
+          >
+            <!-- Downward pointer beak -->
+            <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white dark:bg-[#18181b] border-b border-r border-surface-200 dark:border-surface-700 rotate-45"></div>
+
+            <!-- Top bar: macOS dots + Gmail Draft -->
+            <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-surface-100 dark:border-surface-800">
+              <!-- 3 macOS window dots -->
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[#ff5f56] inline-block"></span>
+                <span class="w-2 h-2 rounded-full bg-[#ffbd2e] inline-block"></span>
+                <span class="w-2 h-2 rounded-full bg-[#27c93f] inline-block"></span>
+              </div>
+              <!-- Gmail Draft logo -->
+              <div class="flex items-center gap-1 text-[10.5px] font-sans font-medium text-surface-400">
+                <svg class="w-3.5 h-3" viewBox="0 0 24 18" fill="none">
+                  <path fill="#4285F4" d="M1.5 15V4.5L12 11.25L22.5 4.5V15C22.5 15.825 21.825 16.5 21 16.5H3C2.175 16.5 1.5 15.825 1.5 15Z"/>
+                  <path fill="#34A853" d="M22.5 4.5V3C22.5 2.175 21.825 1.5 21 1.5H19.5L12 6.75L4.5 1.5H3C2.175 1.5 1.5 2.175 1.5 3V4.5L12 11.25L22.5 4.5Z"/>
+                  <path fill="#EA4335" d="M19.5 1.5L12 6.75L4.5 1.5H3V3L12 9.75L21 3V1.5H19.5Z"/>
+                </svg>
+                <span>Draft</span>
+              </div>
+            </div>
+
+            <!-- To: field (Font Normal, Tidak Tebal) -->
+            <div class="text-[11px] mb-2 flex items-baseline gap-1.5 text-surface-400 font-sans">
+              <span>To:</span>
+              <span class="font-mono text-surface-800 dark:text-surface-200 font-normal tracking-tight">jackmintabae@gmail.com</span>
+            </div>
+
+            <!-- Message box with Typewriter Effect and Blinking Cursor -->
+            <div class="rounded-xl bg-surface-50 dark:bg-surface-800/50 border border-surface-200/80 dark:border-surface-700/60 px-2.5 py-2 text-xs text-surface-800 dark:text-surface-200 min-h-[38px] mb-2.5 flex items-start font-sans">
+              <span id="typewriter-output" class="leading-relaxed"></span>
+              <span id="typewriter-cursor" class="inline-block w-[1.5px] h-3.5 bg-blue-500 ml-0.5 animate-pulse mt-0.5"></span>
+            </div>
+
+            <!-- Bottom Action Row: Copy and Send -->
+            <div class="flex items-center justify-between pt-0.5">
+              <button
+                type="button"
+                id="btn-copy-email"
+                class="text-[11px] font-sans text-surface-500 hover:text-surface-900 dark:hover:text-surface-100 flex items-center gap-1.5 transition px-2 py-0.5 rounded hover:bg-surface-100 dark:hover:bg-surface-800 cursor-pointer"
+                title="Salin email ke clipboard"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span id="copy-email-label">Copy</span>
+              </button>
+
+              <a
+                href="mailto:jackmintabae@gmail.com?subject=Let's%20build%20something%20together.&body=Halo%20Jack,%0A%0A"
+                class="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-[11px] font-medium flex items-center gap-1.5 shadow-sm transition active:scale-95 cursor-pointer"
+                data-sound="click"
+                title="Kirim email langsung"
+              >
+                <span>Send</span>
+                <svg class="w-3 h-3 rotate-45 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Email text link (no whitespace gap before comma) -->
+          <a 
+            href="mailto:jackmintabae@gmail.com" 
+            id="email-link-text"
+            class="font-mono text-surface-900 dark:text-surface-100 underline decoration-surface-400 underline-offset-4 hover:text-brand-600 dark:hover:text-brand-400 transition cursor-pointer"
+          >jackmintabae@gmail.com</a></span>, melalui 
+        <span class="relative inline-block group/github" id="github-hover-trigger">
+          <!-- GitHub Contribution Graph Popover Card (Matching Screenshot) -->
+          <div
+            id="github-modal-card"
+            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-[265px] sm:w-[280px] rounded-2xl bg-white dark:bg-[#18181b] border border-surface-200 dark:border-surface-700 shadow-2xl p-3.5 z-50 opacity-0 scale-95 pointer-events-none group-hover/github:opacity-100 group-hover/github:scale-100 group-hover/github:pointer-events-auto transition-all duration-200 ease-out origin-bottom text-left after:content-[''] after:absolute after:-bottom-4 after:left-0 after:right-0 after:h-4"
+          >
+            <!-- Downward pointer beak -->
+            <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white dark:bg-[#18181b] border-b border-r border-surface-200 dark:border-surface-700 rotate-45"></div>
+
+            <!-- Month Labels on top -->
+            <div class="flex justify-between px-1 mb-1.5 text-[10px] font-mono text-surface-400 dark:text-surface-500 select-none">
+              <span>Jul</span>
+              <span>Aug</span>
+              <span>Sep</span>
+              <span>Oct</span>
+            </div>
+
+            <!-- 4x14 Contribution Grid -->
+            <div id="github-grid-container" class="grid grid-flow-col grid-rows-4 gap-1 justify-center py-0.5 select-none">
+              {gitGridColumns.map((col, colIdx) =>
+                col.map((lvl) => (
+                  <span
+                    class="git-cell w-3.5 h-3.5 rounded-[3px] block bg-[#ebedf0] dark:bg-[#27272a] transition-all duration-150"
+                    data-col={colIdx}
+                    data-target-level={lvl}
+                  />
+                ))
+              )}
+            </div>
+
+            <!-- Profile Info Row at Bottom -->
+            <div class="flex items-center gap-2.5 pt-3 mt-1.5 border-t border-surface-100 dark:border-surface-800">
+              <div class="w-8 h-8 rounded-full overflow-hidden shrink-0 border border-surface-200 dark:border-surface-700 bg-surface-100 dark:bg-surface-800 shadow-sm">
+                <img src="/avatar.png" alt="Jack Ronaldo Mintabae" class="w-full h-full object-cover" />
+              </div>
+              <div class="min-w-0 flex-1 leading-tight">
+                <div class="flex items-baseline gap-1 truncate">
+                  <span class="text-xs font-bold text-surface-900 dark:text-surface-100 font-sans">Jack Ronaldo Mintabae</span>
+                  <span class="text-[11px] font-mono text-surface-400 dark:text-surface-500">@JackMintabae</span>
+                </div>
+                <p class="text-[10px] font-mono text-surface-500 dark:text-surface-400 truncate mt-0.5">
+                  UI/UX Designer, Digital Content...
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- GitHub Link text -->
+          <a 
+            href="https://github.com/JackMintabae" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            id="github-link-text"
+            class="font-mono text-surface-900 dark:text-surface-100 underline decoration-surface-400 underline-offset-4 hover:text-brand-600 dark:hover:text-brand-400 transition cursor-pointer"
+          >GitHub</a></span>, atau 
+        <span class="relative inline-block group/linkedin" id="linkedin-hover-trigger">
+          <!-- Circular Avatar with #OPENTOWORK Badge Popover Card (Matching Screenshot) -->
+          <div
+            id="linkedin-modal-card"
+            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-50 opacity-0 scale-90 pointer-events-none group-hover/linkedin:opacity-100 group-hover/linkedin:scale-100 group-hover/linkedin:pointer-events-auto transition-all duration-200 ease-out origin-bottom select-none after:content-[''] after:absolute after:-bottom-4 after:left-0 after:right-0 after:h-4"
+          >
+            <!-- Downward pointer beak -->
+            <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-white dark:bg-[#18181b] border-b border-r border-surface-200 dark:border-surface-700 rotate-45 z-0 shadow-sm"></div>
+
+            <!-- Circular Photo Container with Border & Shadow -->
+            <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-[3.5px] border-white dark:border-surface-700 shadow-2xl bg-surface-100 dark:bg-surface-800 z-10">
+              <img
+                src="/avatar.png"
+                alt="Foto Profil Jack Ronaldo Mintabae"
+                class="w-full h-full object-cover select-none"
+              />
+
+              <!-- LinkedIn #OPENTOWORK Curved Badge Overlay (Matching Screenshot) -->
+              <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 120 120">
+                <defs>
+                  <path id="opentowork-text-path" d="M 18 68 A 47 47 0 0 0 95 86" fill="none" />
+                  <linearGradient id="opentowork-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#14532d" stop-opacity="0.85" />
+                    <stop offset="50%" stop-color="#16a34a" stop-opacity="0.95" />
+                    <stop offset="100%" stop-color="#15803d" stop-opacity="0.9" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Green curved band -->
+                <path
+                  d="M 15 62 A 49 49 0 0 0 97 88"
+                  fill="none"
+                  stroke="url(#opentowork-grad)"
+                  stroke-width="20"
+                  stroke-linecap="round"
+                />
+
+                <!-- Curved white text #OPENTOWORK -->
+                <text font-family="Inter, system-ui, sans-serif" font-size="8.5" font-weight="900" fill="#ffffff" letter-spacing="0.8">
+                  <textPath href="#opentowork-text-path" xlink:href="#opentowork-text-path" startOffset="50%" text-anchor="middle">
+                    #OPENTOWORK
+                  </textPath>
+                </text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- LinkedIn Link text -->
+          <a 
+            href="https://www.linkedin.com/in/jack-mintabae-348a19449" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            id="linkedin-link-text"
+            class="font-mono text-surface-900 dark:text-surface-100 underline decoration-surface-400 underline-offset-4 hover:text-brand-600 dark:hover:text-brand-400 transition cursor-pointer"
+          >LinkedIn</a></span>.
+      </div>
+    </section>
+
+    <!-- Post Section (ESAI & TULISAN) -->
+    <section class="pt-6 space-y-6">
+      <h2 class="text-xs font-mono font-bold tracking-widest text-surface-400 dark:text-surface-500 uppercase">
+        Esai & Catatan Magang
+      </h2>
+
+      <!-- List of Articles -->
+      <div class="space-y-8">
+        {posts.map((post) => {
+          const dateStr = new Intl.DateTimeFormat('id-ID', {
+            month: 'short',
+            year: 'numeric',
+          }).format(post.data.publishDate);
+
+          return (
+            <article class="group">
+              <!-- Title Row with Date on Right (Matching Screenshot) -->
+              <div class="flex items-baseline justify-between gap-4 mb-1.5">
+                <h3 class="text-base sm:text-[17px] font-bold text-surface-900 dark:text-surface-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition leading-snug">
+                  <a href={`/blog/${post.id}`} data-sound="click">
+                    {post.data.title}
+                  </a>
+                </h3>
+                <span class="shrink-0 text-xs font-mono text-surface-400 dark:text-surface-500">
+                  {dateStr}
+                </span>
+              </div>
+
+              <!-- Brief 2-line snippet -->
+              <p class="text-sm text-surface-600 dark:text-surface-400 leading-relaxed line-clamp-2">
+                {post.data.description}
+              </p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Footer (Matching Screenshot) -->
+    <footer class="pt-16 pb-8 border-t border-surface-200 dark:border-surface-800/80 flex items-center justify-between text-xs font-mono text-surface-400 dark:text-surface-500">
+      <a 
+        href="https://kumtura.id" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="hover:text-surface-700 dark:hover:text-surface-300 transition inline-flex items-center gap-1"
+        data-sound="click"
+      >
+        <span>&larr; kumtura.id</span>
+      </a>
+      <span>&copy; {new Date().getFullYear()}</span>
+    </footer>
+
+    </div>
+
+    <!-- Right Column: POPULAR POSTS Widget (Directly matching Magang Kumtura Undiksha Reference) -->
+    <aside class="mt-14 lg:mt-0 lg:sticky lg:top-12 space-y-6">
+      
+      <!-- Widget 1: POPULAR POSTS -->
+      <div class="rounded-2xl border border-surface-200 dark:border-surface-800 bg-white/70 dark:bg-[#18181b]/70 backdrop-blur-sm p-4 sm:p-5 shadow-sm space-y-4">
+        
+        <!-- Header Widget -->
+        <div class="flex items-center justify-between pb-3 border-b border-surface-100 dark:border-surface-800">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h2 class="text-xs font-mono font-bold tracking-widest text-surface-900 dark:text-surface-100 uppercase">
+              POPULAR POSTS
+            </h2>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-500 dark:text-surface-400">
+            4 Bulan
+          </span>
+        </div>
+
+        <!-- 4 Monthly Chronicles List (Bulan 1 - 4) -->
+        <div class="divide-y divide-surface-100 dark:divide-surface-800/60">
+          {posts.map((post) => (
+            <a
+              href={`/blog/${post.id}`}
+              class="group flex items-start gap-3.5 py-3.5 first:pt-1 last:pb-1 transition block"
+              data-sound="click"
+            >
+              <!-- Thumbnail Image matching Screenshot (Pop sound on hover) -->
+              <div 
+                class="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-surface-200 dark:border-surface-700/80 bg-surface-100 dark:bg-surface-800 shadow-xs hover:scale-110 hover:shadow-md hover:border-brand-500/50 active:scale-95 transition-all duration-200 cursor-pointer"
+                data-sound-hover="pop"
+                title="Hover gambar untuk suara pop!"
+              >
+                <img
+                  src={post.data.ogImage || '/avatar.png'}
+                  alt={post.data.title}
+                  class="w-full h-full object-cover transition-transform duration-200"
+                />
+              </div>
+
+              <!-- Post Details -->
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400">
+                    {post.data.milestone || 'Catatan'}
+                  </span>
+                  <span class="text-[10px] font-mono text-surface-400 dark:text-surface-500">
+                    {new Intl.DateTimeFormat('id-ID', { month: 'short', year: 'numeric' }).format(post.data.publishDate)}
+                  </span>
+                </div>
+                
+                <h3 class="text-xs font-bold text-surface-900 dark:text-surface-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition leading-snug line-clamp-2">
+                  {post.data.title}
+                </h3>
+
+                <p class="text-[11px] text-surface-500 dark:text-surface-400 line-clamp-2 mt-1 leading-relaxed">
+                  {post.data.description}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Widget 2: BLOG ARCHIVE (Sesuai Referensi Blogspot) -->
+      <div class="rounded-2xl border border-surface-200 dark:border-surface-800 bg-white/70 dark:bg-[#18181b]/70 backdrop-blur-sm p-4 sm:p-5 shadow-sm space-y-3">
+        <h2 class="text-xs font-mono font-bold tracking-widest text-surface-900 dark:text-surface-100 uppercase pb-2 border-b border-surface-100 dark:border-surface-800">
+          ARSIP MAGANG
+        </h2>
+        <ul class="space-y-1.5 text-xs font-mono text-surface-600 dark:text-surface-400">
+          {posts.map((post) => (
+            <li class="flex items-center justify-between py-1 hover:text-brand-600 dark:hover:text-brand-400 transition">
+              <a href={`/blog/${post.id}`} class="flex items-center gap-1.5 truncate flex-1 mr-2" data-sound="click">
+                <span class="text-surface-400">&gt;</span>
+                <span class="truncate">{new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' }).format(post.data.publishDate)}</span>
+              </a>
+              <span class="text-[10px] text-surface-400 bg-surface-100 dark:bg-surface-800 px-1.5 py-0.5 rounded shrink-0">
+                {post.data.milestone || 'Catatan'}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Realtime Bali Clock & Interactive Email Typewriter Script -->
+  <script>
+    import { sound } from '../utils/sound';
+
+    // 1. Realtime Bali Clock
+    function updateBaliClock() {
+      const clockEl = document.getElementById('bali-live-clock');
+      if (!clockEl) return;
+
+      try {
+        const timeStr = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'Asia/Makassar',
+          hour: 'numeric',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+        }).format(new Date());
+
+        clockEl.textContent = `${timeStr} di Bali`;
+      } catch (err) {
+        clockEl.textContent = 'WITA di Bali';
+      }
+    }
+
+    updateBaliClock();
+    setInterval(updateBaliClock, 1000);
+
+    // 2. Interactive Email Modal: Pop Sound + Typewriter Effect + Audio Ketikan
+    function setupEmailModalInteraction() {
+      const trigger = document.getElementById('email-hover-trigger');
+      const card = document.getElementById('email-modal-card');
+      const output = document.getElementById('typewriter-output');
+      const copyBtn = document.getElementById('btn-copy-email');
+      const copyLabel = document.getElementById('copy-email-label');
+      const emailLink = document.getElementById('email-link-text');
+
+      if (!trigger || !card || !output) return;
+      if (trigger.dataset.emailBound) return;
+      trigger.dataset.emailBound = 'true';
+
+      const fullMessage = "Let's build something together.";
+      let typewriterTimer: any = null;
+      let isOpen = false;
+
+      function openModal() {
+        if (isOpen) return;
+        isOpen = true;
+
+        // Tampilkan modal secara langsung via CSS class & inline style sebagai jaminan 100%
+        card.classList.add('is-active');
+
+        // Mainkan suara Bubble Pop
+        sound.playPop();
+
+        // Typewriter Animation
+        output.textContent = '';
+        if (typewriterTimer) clearInterval(typewriterTimer);
+
+        let charIndex = 0;
+        // Jeda 80ms agar suara pop terdengar jelas sebelum suara ketikan dimulai
+        setTimeout(() => {
+          if (!isOpen) return;
+
+          typewriterTimer = setInterval(() => {
+            if (!isOpen) {
+              clearInterval(typewriterTimer);
+              return;
+            }
+
+            if (charIndex < fullMessage.length) {
+              output.textContent += fullMessage[charIndex];
+              charIndex++;
+              // Suara tuts keyboard mekanikal di setiap huruf
+              sound.playTypingClick();
+            } else {
+              clearInterval(typewriterTimer);
+            }
+          }, 45); // Kecepatan ketik alami
+        }, 80);
+      }
+
+      function closeModal() {
+        isOpen = false;
+        card.classList.remove('is-active');
+        if (typewriterTimer) clearInterval(typewriterTimer);
+        setTimeout(() => {
+          if (!isOpen) {
+            output.textContent = '';
+          }
+        }, 150);
+      }
+
+      // Event Mouse Hover
+      trigger.addEventListener('mouseenter', openModal);
+      trigger.addEventListener('mouseleave', closeModal);
+
+      // Event Klik pada teks email (untuk pengguna mobile atau jika hover diblokir browser)
+      emailLink?.addEventListener('click', (e) => {
+        if (!isOpen) {
+          e.preventDefault();
+          openModal();
+        }
+      });
+
+      // Tombol Copy email
+      copyBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigator.clipboard.writeText('jackmintabae@gmail.com');
+        sound.playClick();
+        if (copyLabel) copyLabel.textContent = 'Copied!';
+        setTimeout(() => {
+          if (copyLabel) copyLabel.textContent = 'Copy';
+        }, 2000);
+      });
+    }
+
+    setupEmailModalInteraction();
+    document.addEventListener('astro:after-swap', setupEmailModalInteraction);
+
+    // 3. Interactive GitHub Contribution Grid Animation & Sound Sweep
+    function setupGitHubModalInteraction() {
+      const trigger = document.getElementById('github-hover-trigger');
+      const card = document.getElementById('github-modal-card');
+      const container = document.getElementById('github-grid-container');
+      const ghLink = document.getElementById('github-link-text');
+
+      if (!trigger || !card || !container) return;
+      if (trigger.dataset.ghBound) return;
+      trigger.dataset.ghBound = 'true';
+
+      const totalCols = 14;
+      let sweepInterval: any = null;
+      let isOpen = false;
+
+      function resetGrid() {
+        if (sweepInterval) {
+          clearInterval(sweepInterval);
+          sweepInterval = null;
+        }
+        const cells = container.querySelectorAll<HTMLElement>('.git-cell');
+        cells.forEach((cell) => {
+          cell.classList.remove('git-lvl-1', 'git-lvl-2', 'git-lvl-3', 'scale-110');
+        });
+      }
+
+      function openModal() {
+        if (isOpen) return;
+        isOpen = true;
+
+        card.classList.add('is-active');
+        sound.playPop();
+
+        // Mulai animasi gelombang hijau dari kiri ke kanan
+        resetGrid();
+
+        let currentCol = 0;
+        // Jeda 60ms setelah pop, lalu mulai sweep per kolom
+        setTimeout(() => {
+          if (!isOpen) return;
+
+          sweepInterval = setInterval(() => {
+            if (!isOpen || currentCol >= totalCols) {
+              clearInterval(sweepInterval);
+              sweepInterval = null;
+              return;
+            }
+
+            // Nyalakan semua sel di kolom ini
+            const colCells = container.querySelectorAll<HTMLElement>(`.git-cell[data-col="${currentCol}"]`);
+            colCells.forEach((cell) => {
+              const target = cell.dataset.targetLevel;
+              if (target && target !== '0') {
+                cell.classList.add(`git-lvl-${target}`, 'scale-110');
+                setTimeout(() => cell.classList.remove('scale-110'), 140);
+              }
+            });
+
+            // Bunyikan nada harmonik mengikuti gerakan kolom hijau
+            sound.playGridNote(currentCol);
+
+            currentCol++;
+          }, 45); // Kecepatan sweep 45ms per kolom
+        }, 60);
+      }
+
+      function closeModal() {
+        isOpen = false;
+        card.classList.remove('is-active');
+        if (sweepInterval) {
+          clearInterval(sweepInterval);
+          sweepInterval = null;
+        }
+        setTimeout(() => {
+          if (!isOpen) {
+            resetGrid();
+          }
+        }, 200);
+      }
+
+      trigger.addEventListener('mouseenter', openModal);
+      trigger.addEventListener('mouseleave', closeModal);
+
+      // Mobile/touch support
+      ghLink?.addEventListener('click', (e) => {
+        if (!isOpen && window.innerWidth < 640) {
+          e.preventDefault();
+          openModal();
+        }
+      });
+    }
+
+    setupGitHubModalInteraction();
+    document.addEventListener('astro:after-swap', setupGitHubModalInteraction);
+
+    // 4. Interactive LinkedIn #OPENTOWORK Circular Popover & Sound
+    function setupLinkedInModalInteraction() {
+      const trigger = document.getElementById('linkedin-hover-trigger');
+      const card = document.getElementById('linkedin-modal-card');
+      const link = document.getElementById('linkedin-link-text');
+
+      if (!trigger || !card) return;
+      if (trigger.dataset.liBound) return;
+      trigger.dataset.liBound = 'true';
+
+      let isOpen = false;
+
+      function openModal() {
+        if (isOpen) return;
+        isOpen = true;
+        card.classList.add('is-active');
+        // Suara harmonic ping-chime khusus LinkedIn
+        sound.playLinkedIn();
+      }
+
+      function closeModal() {
+        isOpen = false;
+        card.classList.remove('is-active');
+      }
+
+      trigger.addEventListener('mouseenter', openModal);
+      trigger.addEventListener('mouseleave', closeModal);
+
+      link?.addEventListener('click', (e) => {
+        if (!isOpen && window.innerWidth < 640) {
+          e.preventDefault();
+          openModal();
+        }
+      });
+    }
+
+    setupLinkedInModalInteraction();
+    document.addEventListener('astro:after-swap', setupLinkedInModalInteraction);
+  </script>
+
+  <style>
+    /* Jaminan 100% kartu modal tampil sempurna saat kursor berada di area teks */
+    #email-hover-trigger:hover #email-modal-card,
+    #email-modal-card.is-active,
+    #github-hover-trigger:hover #github-modal-card,
+    #github-modal-card.is-active,
+    #linkedin-hover-trigger:hover #linkedin-modal-card,
+    #linkedin-modal-card.is-active {
+      opacity: 1 !important;
+      transform: translate(-50%, 0) scale(1) !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+
+    /* GitHub Contribution Grid Square Colors (Light & Dark) */
+    .git-cell {
+      transform-origin: center;
+    }
+    .git-cell.git-lvl-1 {
+      background-color: #86efac !important; /* Hijau muda lembut */
+    }
+    :is(.dark) .git-cell.git-lvl-1 {
+      background-color: #14532d !important;
+    }
+    .git-cell.git-lvl-2 {
+      background-color: #4ade80 !important; /* Hijau segar */
+    }
+    :is(.dark) .git-cell.git-lvl-2 {
+      background-color: #16a34a !important;
+    }
+    .git-cell.git-lvl-3 {
+      background-color: #16a34a !important; /* Hijau pekat kontributor aktif */
+    }
+    :is(.dark) .git-cell.git-lvl-3 {
+      background-color: #4ade80 !important; /* Neon emerald terang di mode gelap */
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="28" fill="url(#bg3)"/>
+  <!-- Sliders / Refinement Controls -->
+  <rect x="32" y="38" width="96" height="80" rx="14" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-opacity="0.3" stroke-width="2"/>
+  <!-- Slider 1 -->
+  <line x1="48" y1="58" x2="112" y2="58" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="86" cy="58" r="7" fill="#ffffff"/>
+  <!-- Slider 2 -->
+  <line x1="48" y1="80" x2="112" y2="80" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="62" cy="80" r="7" fill="#ffffff"/>
+  <!-- Chat feedback bubble -->
+  <circle cx="114" cy="98" r="15" fill="#3b82f6"/>
+  <path d="M108 97 L120 97 M108 102 L116 102" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <!-- Milestone Label -->
+  <text x="32" y="148" font-family="system-ui, sans-serif" font-size="11" font-weight="800" fill="#ffffff" letter-spacing="1">BULAN 03</text>
+</svg>

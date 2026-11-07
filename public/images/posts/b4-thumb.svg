@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="28" fill="url(#bg4)"/>
+  <!-- Graduation / Trophy & Evaluation Badge -->
+  <path d="M80 34 L122 52 L80 70 L38 52 Z" fill="#ffffff" fill-opacity="0.95"/>
+  <path d="M52 63 L52 86 C52 98 108 98 108 86 L108 63" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  <!-- Tassel -->
+  <path d="M112 56 L118 78" stroke="#fcd34d" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Award Star / Ribbon -->
+  <circle cx="80" cy="106" r="16" fill="#f59e0b"/>
+  <path d="M80 97 L83 103 L90 104 L85 109 L86 116 L80 112 L74 116 L75 109 L70 104 L77 103 Z" fill="#ffffff"/>
+  <!-- Milestone Label -->
+  <text x="32" y="148" font-family="system-ui, sans-serif" font-size="11" font-weight="800" fill="#ffffff" letter-spacing="1">BULAN 04</text>
+</svg>

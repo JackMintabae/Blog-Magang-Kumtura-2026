@@ -1,0 +1,82 @@
+---
+// Header.astro
+---
+
+<header class="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-surface-950/80 border-b border-surface-200 dark:border-surface-800 transition-colors">
+  <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+    <!-- Logo / Brand -->
+    <a 
+      href="/" 
+      class="group flex items-center gap-2 text-surface-900 dark:text-surface-50 font-semibold tracking-tight"
+      data-sound="click"
+    >
+      <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold text-sm shadow-sm group-hover:scale-105 transition-transform">
+        UX
+      </div>
+      <span class="font-mono text-sm">anakmagang<span class="text-brand-600 dark:text-brand-400">.design</span></span>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="flex items-center gap-1 sm:gap-4 text-sm font-medium">
+      <a 
+        href="/" 
+        class="px-3 py-1.5 rounded-md text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition"
+        data-sound="click"
+      >
+        Home
+      </a>
+      <a 
+        href="/blog" 
+        class="px-3 py-1.5 rounded-md text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition"
+        data-sound="click"
+      >
+        Chronicles
+      </a>
+      <a 
+        href="/about" 
+        class="px-3 py-1.5 rounded-md text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 transition"
+        data-sound="click"
+      >
+        About
+      </a>
+
+      <!-- Controls Divider -->
+      <div class="h-4 w-[1px] bg-surface-200 dark:bg-surface-800 mx-1"></div>
+
+      <!-- Sound FX Toggle Button -->
+      <button 
+        id="sound-toggle-btn"
+        aria-label="Toggle Sound Effects"
+        class="p-2 rounded-lg text-surface-600 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800 transition relative"
+        title="Toggle Audio UX / Sound Effects"
+      >
+        <!-- Audio On Icon -->
+        <svg id="icon-sound-on" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+        </svg>
+        <!-- Audio Muted Icon -->
+        <svg id="icon-sound-off" class="w-4 h-4 hidden text-surface-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+        </svg>
+      </button>
+
+      <!-- Dark Mode Toggle Button -->
+      <button 
+        id="theme-toggle-btn"
+        aria-label="Toggle Theme"
+        class="p-2 rounded-lg text-surface-600 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800 transition"
+        data-sound="click"
+      >
+        <!-- Sun Icon -->
+        <svg id="icon-sun" class="w-4 h-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <!-- Moon Icon -->
+        <svg id="icon-moon" class="w-4 h-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>

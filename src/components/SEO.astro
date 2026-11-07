@@ -1,0 +1,100 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  article?: boolean;
+  publishDate?: Date;
+  updatedDate?: Date;
+  author?: string;
+  tags?: string[];
+  canonicalURL?: URL | string;
+}
+
+const {
+  title,
+  description,
+  image = '/images/og-default.png',
+  article = false,
+  publishDate,
+  updatedDate,
+  author = 'Jack Ronaldo Mintabae',
+  tags = [],
+  canonicalURL = Astro.url,
+} = Astro.props;
+
+const siteTitle = `${title} | Jack Ronaldo Mintabae - UI/UX Design Chronicles`;
+const imageURL = new URL(image, Astro.site || Astro.url.origin).toString();
+
+const jsonLd = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title,
+      description: description,
+      image: [imageURL],
+      datePublished: publishDate?.toISOString(),
+      dateModified: (updatedDate || publishDate)?.toISOString(),
+      author: {
+        '@type': 'Person',
+        name: author,
+        jobTitle: 'UI/UX Design Intern',
+        url: Astro.site?.toString() || Astro.url.origin,
+      },
+      keywords: tags.join(', '),
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString(),
+      },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      name: siteTitle,
+      description: description,
+      url: canonicalURL.toString(),
+      mainEntity: {
+        '@type': 'Person',
+        name: author,
+        jobTitle: 'UI/UX Design Intern',
+        description: description,
+      },
+    };
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{siteTitle}</title>
+<meta name="title" content={siteTitle} />
+<meta name="description" content={description} />
+{tags.length > 0 && <meta name="keywords" content={tags.join(', ')} />}
+<meta name="author" content={author} />
+
+<!-- Open Graph / Facebook / LinkedIn -->
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+{article && publishDate && (
+  <meta property="article:published_time" content={publishDate.toISOString()} />
+)}
+{article && tags.map((t) => <meta property="article:tag" content={t} />)}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={siteTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={imageURL} />
+
+<!-- Schema.org JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

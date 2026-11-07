@@ -1,0 +1,81 @@
+---
+export interface Props {
+  beforeSrc: string;
+  afterSrc: string;
+  beforeAlt?: string;
+  afterAlt?: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+}
+
+const {
+  beforeSrc,
+  afterSrc,
+  beforeAlt = 'Before redesign',
+  afterAlt = 'After redesign',
+  beforeLabel = 'Before (Old UI)',
+  afterLabel = 'After (Redesign)',
+} = Astro.props;
+---
+
+<div class="before-after-slider relative w-full overflow-hidden rounded-xl border border-surface-200 dark:border-surface-800 my-8 shadow-sm select-none">
+  <!-- After image (bottom layer) -->
+  <img 
+    src={afterSrc} 
+    alt={afterAlt} 
+    class="w-full h-auto block object-cover" 
+  />
+  <span class="absolute bottom-3 right-3 text-xs font-mono font-medium bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded">
+    {afterLabel}
+  </span>
+
+  <!-- Before image (top layer with clip) -->
+  <div class="before-layer absolute inset-0 overflow-hidden w-1/2">
+    <img 
+      src={beforeSrc} 
+      alt={beforeAlt} 
+      class="max-w-none w-full h-full object-cover" 
+    />
+    <span class="absolute bottom-3 left-3 text-xs font-mono font-medium bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded">
+      {beforeLabel}
+    </span>
+  </div>
+
+  <!-- Divider handle line -->
+  <div class="slider-handle absolute top-0 bottom-0 left-1/2 -ml-0.5 w-1 bg-white shadow-lg cursor-ew-resize flex items-center justify-center">
+    <div class="w-7 h-7 bg-white dark:bg-surface-900 border border-surface-300 dark:border-surface-700 rounded-full shadow-md flex items-center justify-center text-xs text-surface-600 dark:text-surface-300">
+      &harr;
+    </div>
+  </div>
+
+  <!-- Range input overlay for smooth scrub -->
+  <input 
+    type="range" 
+    min="0" 
+    max="100" 
+    value="50" 
+    aria-label="Slide to compare before and after"
+    class="slider-input absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10" 
+  />
+</div>
+
+<script>
+  function initSliders() {
+    document.querySelectorAll('.before-after-slider').forEach((container) => {
+      const input = container.querySelector('.slider-input') as HTMLInputElement | null;
+      const beforeLayer = container.querySelector('.before-layer') as HTMLElement | null;
+      const handle = container.querySelector('.slider-handle') as HTMLElement | null;
+
+      if (!input || !beforeLayer || !handle) return;
+
+      input.addEventListener('input', (e) => {
+        const val = (e.target as HTMLInputElement).value;
+        beforeLayer.style.width = `${val}%`;
+        handle.style.left = `${val}%`;
+      });
+    });
+  }
+
+  initSliders();
+  document.addEventListener('astro:after-swap', initSliders);
+</script>
