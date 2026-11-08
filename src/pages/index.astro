@@ -388,14 +388,16 @@ const gitGridColumns = [
                 </span>
               </div>
 
-              <!-- Slot Gambar di Bawah Judul (Siap otomatis tampil saat gambar diisi) -->
+              <!-- Slot Gambar di Bawah Judul -->
               {post.data.coverImage && (
                 <div class="my-3.5 rounded-xl overflow-hidden border border-surface-200 dark:border-surface-800 shadow-xs">
-                  <img
-                    src={post.data.coverImage}
-                    alt={post.data.title}
-                    class="w-full h-auto max-h-80 object-cover"
-                  />
+                  <a href={`/blog/${post.id}`} data-sound="click" class="block group/img overflow-hidden">
+                    <img
+                      src={post.data.coverImage}
+                      alt={post.data.title}
+                      class="w-full h-auto max-h-80 sm:max-h-96 object-cover group-hover/img:scale-[1.02] transition-transform duration-300"
+                    />
+                  </a>
                 </div>
               )}
 

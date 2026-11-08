@@ -9,7 +9,8 @@ milestone: "Bulan 01"
 readTime: "6 min read"
 tags: ["UI/UX", "Design System", "Figma", "Heuristic Evaluation"]
 featured: true
-ogImage: "/images/posts/b1-thumb.svg"
+coverImage: "/images/posts/bulan-1.jpg"
+ogImage: "/images/posts/bulan-1.jpg"
 ---
 
 Memulai bulan pertama sebagai **UI/UX Design Intern** langsung membuka mata saya: dunia desain produk di industri nyata jauh lebih dinamis daripada sekadar membuat *dribbble-shot* yang estetik.
