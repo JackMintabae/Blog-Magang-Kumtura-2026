@@ -353,23 +353,31 @@ const gitGridColumns = [
     </section>
 
     <!-- Post Section (ESAI & TULISAN) -->
-    <section class="pt-6 space-y-6">
-      <h2 class="text-xs font-mono font-bold tracking-widest text-surface-400 dark:text-surface-500 uppercase">
-        Esai & Catatan Magang
-      </h2>
+    <section class="pt-6 space-y-5">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xs font-mono font-bold tracking-widest text-surface-400 dark:text-surface-500 uppercase">
+          Esai & Catatan Magang
+        </h2>
+      </div>
 
-      <!-- List of Articles -->
-      <div class="space-y-8">
+      <!-- Single Featured Month Container (Hanya 1 bulan ditampilkan agar tidak duplikat dengan Popular Posts) -->
+      <div id="featured-article-container">
         {posts.map((post) => {
+          const match = post.data.milestone?.match(/\d+/);
+          const monthNum = match ? parseInt(match[0], 10) : 1;
           const dateStr = new Intl.DateTimeFormat('id-ID', {
             month: 'short',
             year: 'numeric',
           }).format(post.data.publishDate);
 
           return (
-            <article class="group">
+            <article
+              class={`featured-month-card group transition-all duration-200 ${monthNum === 1 ? 'block' : 'hidden'}`}
+              data-month={monthNum}
+              id={`featured-month-${monthNum}`}
+            >
               <!-- Title Row with Date on Right (Matching Screenshot) -->
-              <div class="flex items-baseline justify-between gap-4 mb-1.5">
+              <div class="flex items-baseline justify-between gap-4 mb-2">
                 <h3 class="text-base sm:text-[17px] font-bold text-surface-900 dark:text-surface-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition leading-snug">
                   <a href={`/blog/${post.id}`} data-sound="click">
                     {post.data.title}
@@ -379,6 +387,17 @@ const gitGridColumns = [
                   {dateStr}
                 </span>
               </div>
+
+              <!-- Slot Gambar di Bawah Judul (Siap otomatis tampil saat gambar diisi) -->
+              {post.data.coverImage && (
+                <div class="my-3.5 rounded-xl overflow-hidden border border-surface-200 dark:border-surface-800 shadow-xs">
+                  <img
+                    src={post.data.coverImage}
+                    alt={post.data.title}
+                    class="w-full h-auto max-h-80 object-cover"
+                  />
+                </div>
+              )}
 
               <!-- Brief 2-line snippet -->
               <p class="text-sm text-surface-600 dark:text-surface-400 leading-relaxed line-clamp-2">
@@ -427,46 +446,51 @@ const gitGridColumns = [
 
         <!-- 4 Monthly Chronicles List (Bulan 1 - 4) -->
         <div class="divide-y divide-surface-100 dark:divide-surface-800/60">
-          {posts.map((post) => (
-            <a
-              href={`/blog/${post.id}`}
-              class="group flex items-start gap-3.5 py-3.5 first:pt-1 last:pb-1 transition block"
-              data-sound="click"
-            >
-              <!-- Thumbnail Image matching Screenshot (Pop sound on hover) -->
-              <div 
-                class="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-surface-200 dark:border-surface-700/80 bg-surface-100 dark:bg-surface-800 shadow-xs hover:scale-110 hover:shadow-md hover:border-brand-500/50 active:scale-95 transition-all duration-200 cursor-pointer"
-                data-sound-hover="pop"
-                title="Hover gambar untuk suara pop!"
+          {posts.map((post) => {
+            const match = post.data.milestone?.match(/\d+/);
+            const monthNum = match ? parseInt(match[0], 10) : 1;
+            return (
+              <a
+                href={`/blog/${post.id}`}
+                class="group flex items-start gap-3.5 py-3.5 first:pt-1 last:pb-1 px-2 -mx-2 rounded-xl transition-all duration-200 block sidebar-popular-item"
+                data-sidebar-month={monthNum}
+                data-sound="click"
               >
-                <img
-                  src={post.data.ogImage || '/avatar.png'}
-                  alt={post.data.title}
-                  class="w-full h-full object-cover transition-transform duration-200"
-                />
-              </div>
-
-              <!-- Post Details -->
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-1.5 mb-1">
-                  <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400">
-                    {post.data.milestone || 'Catatan'}
-                  </span>
-                  <span class="text-[10px] font-mono text-surface-400 dark:text-surface-500">
-                    {new Intl.DateTimeFormat('id-ID', { month: 'short', year: 'numeric' }).format(post.data.publishDate)}
-                  </span>
+                <!-- Thumbnail Image matching Screenshot (Pop sound on hover) -->
+                <div 
+                  class="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-surface-200 dark:border-surface-700/80 bg-surface-100 dark:bg-surface-800 shadow-xs group-hover:scale-105 group-hover:shadow-md group-hover:border-brand-500/50 active:scale-95 transition-all duration-200 cursor-pointer"
+                  data-sound-hover="pop"
+                  title="Hover gambar untuk suara pop!"
+                >
+                  <img
+                    src={post.data.ogImage || '/avatar.png'}
+                    alt={post.data.title}
+                    class="w-full h-full object-cover transition-transform duration-200"
+                  />
                 </div>
-                
-                <h3 class="text-xs font-bold text-surface-900 dark:text-surface-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition leading-snug line-clamp-2">
-                  {post.data.title}
-                </h3>
 
-                <p class="text-[11px] text-surface-500 dark:text-surface-400 line-clamp-2 mt-1 leading-relaxed">
-                  {post.data.description}
-                </p>
-              </div>
-            </a>
-          ))}
+                <!-- Post Details -->
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400">
+                      {post.data.milestone || 'Catatan'}
+                    </span>
+                    <span class="text-[10px] font-mono text-surface-400 dark:text-surface-500">
+                      {new Intl.DateTimeFormat('id-ID', { month: 'short', year: 'numeric' }).format(post.data.publishDate)}
+                    </span>
+                  </div>
+                  
+                  <h3 class="text-xs font-bold text-surface-900 dark:text-surface-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition leading-snug line-clamp-2">
+                    {post.data.title}
+                  </h3>
+
+                  <p class="text-[11px] text-surface-500 dark:text-surface-400 line-clamp-2 mt-1 leading-relaxed">
+                    {post.data.description}
+                  </p>
+                </div>
+              </a>
+            );
+          })}
         </div>
       </div>
 
@@ -747,6 +771,54 @@ const gitGridColumns = [
 
     setupLinkedInModalInteraction();
     document.addEventListener('astro:after-swap', setupLinkedInModalInteraction);
+
+    // 5. Dynamic Featured Month Switcher (Bulan 1 default, sync via ?bulan=X & localStorage)
+    function setupFeaturedMonth() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryMonth = urlParams.get('bulan');
+
+      let targetMonth = '1';
+      if (queryMonth && ['1', '2', '3', '4'].includes(queryMonth)) {
+        targetMonth = queryMonth;
+        try {
+          localStorage.setItem('active_magang_bulan', queryMonth);
+        } catch (e) {}
+      } else {
+        try {
+          const saved = localStorage.getItem('active_magang_bulan');
+          if (saved && ['1', '2', '3', '4'].includes(saved)) {
+            targetMonth = saved;
+          }
+        } catch (e) {}
+      }
+
+      // Tampilkan hanya kartu bulan terpilih di kolom Esai & Catatan Magang
+      const cards = document.querySelectorAll<HTMLElement>('.featured-month-card');
+      cards.forEach((card) => {
+        const m = card.getAttribute('data-month');
+        if (m === targetMonth) {
+          card.classList.remove('hidden');
+          card.classList.add('block');
+        } else {
+          card.classList.remove('block');
+          card.classList.add('hidden');
+        }
+      });
+
+      // Berikan penanda halus pada item Popular Posts di sidebar kanan yang sedang aktif
+      const sidebarLinks = document.querySelectorAll<HTMLElement>('[data-sidebar-month]');
+      sidebarLinks.forEach((link) => {
+        const m = link.getAttribute('data-sidebar-month');
+        if (m === targetMonth) {
+          link.classList.add('bg-surface-200/50', 'dark:bg-surface-800/60', 'ring-1', 'ring-surface-300', 'dark:ring-surface-700');
+        } else {
+          link.classList.remove('bg-surface-200/50', 'dark:bg-surface-800/60', 'ring-1', 'ring-surface-300', 'dark:ring-surface-700');
+        }
+      });
+    }
+
+    setupFeaturedMonth();
+    document.addEventListener('astro:after-swap', setupFeaturedMonth);
   </script>
 
   <style>

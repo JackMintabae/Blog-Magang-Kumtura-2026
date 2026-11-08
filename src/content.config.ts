@@ -14,6 +14,7 @@ const blog = defineCollection({
     milestone: z.string().optional(), // e.g., "Bulan 01"
     tags: z.array(z.string()).default([]),
     ogImage: z.string().optional(),
+    coverImage: z.string().optional(),
     readTime: z.string().default('5 min read'),
     featured: z.boolean().default(false),
   }),

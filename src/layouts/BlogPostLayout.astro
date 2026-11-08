@@ -37,6 +37,10 @@ const {
   headings = [],
 } = Astro.props;
 
+const monthMatch = milestone?.match(/\d+/);
+const monthNum = monthMatch ? parseInt(monthMatch[0], 10) : 1;
+const backHref = `/?bulan=${monthNum}`;
+
 const formattedDate = new Intl.DateTimeFormat('id-ID', {
   day: 'numeric',
   month: 'long',
@@ -62,8 +66,10 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
     <!-- Top Action Bar (Close / Back Button) -->
     <div class="flex items-center justify-between mb-6 pb-4 border-b border-surface-200 dark:border-surface-800">
       <a
-        href="/"
+        href={backHref}
         id="btn-back-chronicles"
+        data-month-num={monthNum}
+        data-back-url={backHref}
         class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-100 dark:bg-surface-800 hover:bg-surface-200 dark:hover:bg-surface-700 text-surface-700 dark:text-surface-300 text-xs font-mono transition group"
         data-sound="click"
       >
@@ -213,10 +219,19 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
   <!-- ScrollSpy & Keyboard Script -->
   <script>
     function setupTOCAndShortcuts() {
-      // 1. ESC key shortcut to close / go back to Home
+      const backBtn = document.getElementById('btn-back-chronicles');
+      const backUrl = backBtn?.getAttribute('data-back-url') || '/';
+      const monthNum = backBtn?.getAttribute('data-month-num') || '1';
+
+      // Simpan bulan yang sedang dibaca ke localStorage
+      try {
+        localStorage.setItem('active_magang_bulan', monthNum);
+      } catch (err) {}
+
+      // 1. ESC key shortcut to close / go back to Home dengan bulan yang sesuai
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          window.location.href = '/';
+          window.location.href = backUrl;
         }
       });
 
