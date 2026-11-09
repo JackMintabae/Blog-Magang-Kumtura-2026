@@ -1,5 +1,5 @@
 ---
-title: "Bulan Pertama di Kumtura Digital Solutions: Riset Kompetitor, Eksplorasi POS Laundry, dan Inisiasi KUUVA"
+title: "Bulan Pertama di Kumtura Digital Solutions: Riset Kompetitor, Eksplorasi Sistem POS, dan Inisiasi KUUVA"
 description: "Riset mendalam ekosistem SaaS Point of Sale (POS), bedah PRD, evaluasi kompetitor kasir, hingga perancangan user flow dan wireframe POS laundry."
 publishDate: 2026-09-01
 author: "Jack Ronaldo Mintabae"
