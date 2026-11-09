@@ -51,7 +51,7 @@ const formattedDate = new Intl.DateTimeFormat('id-ID', {
   author={author}
   tags={tags}
   image={ogImage}
-  containerClass="max-w-2xl lg:max-w-3xl"
+  containerClass="max-w-3xl lg:max-w-4xl xl:max-w-5xl"
 >
   <div class="relative mx-auto">
     <!-- Top Action Bar (Close / Back Button) -->
@@ -77,8 +77,8 @@ const formattedDate = new Intl.DateTimeFormat('id-ID', {
       </div>
     </div>
 
-    <!-- Main Article Body (Clean, Centered, Distraction-Free Reading Canvas) -->
-    <article class="max-w-2xl mx-auto">
+    <!-- Main Article Body (Lebar Lebih Luas, Lega, & Modern) -->
+    <article class="max-w-3xl lg:max-w-4xl mx-auto">
       
       <!-- Header / Meta -->
       <header class="mb-8">
@@ -94,7 +94,7 @@ const formattedDate = new Intl.DateTimeFormat('id-ID', {
         </div>
 
         <!-- Main Article Title (H1) -->
-        <h1 class="text-2xl sm:text-3xl lg:text-[34px] font-extrabold tracking-tight text-surface-900 dark:text-surface-50 leading-[1.25] mb-6">
+        <h1 class="text-2xl sm:text-3xl lg:text-[36px] font-extrabold tracking-tight text-surface-900 dark:text-surface-50 leading-[1.25] mb-6">
           {title}
         </h1>
 
@@ -120,19 +120,19 @@ const formattedDate = new Intl.DateTimeFormat('id-ID', {
         </div>
       </header>
 
-      <!-- Featured / Cover Image -->
+      <!-- Featured / Cover Image (Lebih Lebar & Sinematik) -->
       {coverImage && (
-        <div class="mb-8 rounded-2xl overflow-hidden border border-surface-200 dark:border-surface-800 shadow-sm bg-surface-100 dark:bg-surface-900">
+        <div class="mb-10 rounded-2xl overflow-hidden border border-surface-200 dark:border-surface-800 shadow-sm bg-surface-100 dark:bg-surface-900">
           <img
             src={coverImage}
             alt={title}
-            class="w-full h-auto max-h-[460px] object-cover"
+            class="w-full h-auto max-h-[520px] object-cover"
           />
         </div>
       )}
 
       <!-- Main Markdown Prose Content -->
-      <div class="prose prose-zinc dark:prose-invert max-w-none text-[15px] sm:text-base leading-[1.8] text-surface-700 dark:text-surface-300 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-surface-900 dark:prose-headings:text-surface-50 prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-p:my-4 prose-p:leading-[1.8] prose-a:text-brand-600 dark:prose-a:text-brand-400 prose-img:rounded-xl">
+      <div class="prose prose-zinc dark:prose-invert max-w-none text-base sm:text-[17px] leading-[1.85] text-surface-700 dark:text-surface-300 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-surface-900 dark:prose-headings:text-surface-50 prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-p:my-5 prose-p:leading-[1.85] prose-a:text-brand-600 dark:prose-a:text-brand-400 prose-img:rounded-xl">
         <slot />
       </div>
 
