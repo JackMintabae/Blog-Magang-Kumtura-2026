@@ -441,8 +441,8 @@ const gitGridColumns = [
               POPULAR POSTS
             </h2>
           </div>
-          <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 font-medium">
-            4 Bulan Magang
+          <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-brand-400 font-medium">
+            {posts.length} Bulan Berjalan
           </span>
         </div>
 
@@ -759,8 +759,11 @@ const gitGridColumns = [
       const urlParams = new URLSearchParams(window.location.search);
       const queryMonth = urlParams.get('bulan');
 
-      let targetMonth = '1';
-      if (queryMonth && ['1', '2', '3', '4'].includes(queryMonth)) {
+      const cards = document.querySelectorAll<HTMLElement>('.featured-month-card');
+      const validMonths = Array.from(cards).map((c) => c.getAttribute('data-month') || '');
+
+      let targetMonth = validMonths[0] || '1';
+      if (queryMonth && validMonths.includes(queryMonth)) {
         targetMonth = queryMonth;
         try {
           localStorage.setItem('active_magang_bulan', queryMonth);
@@ -768,14 +771,13 @@ const gitGridColumns = [
       } else {
         try {
           const saved = localStorage.getItem('active_magang_bulan');
-          if (saved && ['1', '2', '3', '4'].includes(saved)) {
+          if (saved && validMonths.includes(saved)) {
             targetMonth = saved;
           }
         } catch (e) {}
       }
 
       // Tampilkan hanya kartu bulan terpilih di kolom Esai & Catatan Magang
-      const cards = document.querySelectorAll<HTMLElement>('.featured-month-card');
       cards.forEach((card) => {
         const m = card.getAttribute('data-month');
         if (m === targetMonth) {
