@@ -428,21 +428,21 @@ const gitGridColumns = [
     </div>
 
     <!-- Right Column: POPULAR POSTS Widget (Directly matching Magang Kumtura Undiksha Reference) -->
-    <aside class="mt-14 lg:mt-0 lg:sticky lg:top-12 space-y-6">
+    <aside class="mt-14 lg:mt-0 lg:sticky lg:top-10 space-y-6">
       
-      <!-- Widget 1: POPULAR POSTS -->
-      <div class="rounded-2xl border border-surface-200 dark:border-surface-800 bg-white/70 dark:bg-[#18181b]/70 backdrop-blur-sm p-4 sm:p-5 shadow-sm space-y-4">
+      <!-- Widget: POPULAR POSTS (Proporsional & Mengisi Ruang dengan Nyaman) -->
+      <div class="rounded-2xl border border-surface-200 dark:border-surface-800 bg-white/70 dark:bg-[#18181b]/70 backdrop-blur-sm p-5 sm:p-6 shadow-sm space-y-4">
         
         <!-- Header Widget -->
-        <div class="flex items-center justify-between pb-3 border-b border-surface-100 dark:border-surface-800">
+        <div class="flex items-center justify-between pb-3.5 border-b border-surface-100 dark:border-surface-800">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             <h2 class="text-xs font-mono font-bold tracking-widest text-surface-900 dark:text-surface-100 uppercase">
               POPULAR POSTS
             </h2>
           </div>
-          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-500 dark:text-surface-400">
-            4 Bulan
+          <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-400 font-medium">
+            4 Bulan Magang
           </span>
         </div>
 
@@ -454,18 +454,18 @@ const gitGridColumns = [
             return (
               <a
                 href={`/blog/${post.id}`}
-                class="group flex items-start gap-3.5 py-3.5 first:pt-1 last:pb-1 px-2 -mx-2 rounded-xl transition-all duration-200 block sidebar-popular-item"
+                class="group flex items-start gap-4 py-4 first:pt-1 last:pb-1 px-2.5 -mx-2.5 rounded-xl transition-all duration-200 block sidebar-popular-item"
                 data-sidebar-month={monthNum}
                 data-sound="click"
               >
-                <!-- Thumbnail Image matching Screenshot (Pop sound on hover) -->
+                <!-- Thumbnail Image (Ukuran lebih lega dan foto lebih jelas) -->
                 <div 
-                  class="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-surface-200 dark:border-surface-700/80 bg-surface-100 dark:bg-surface-800 shadow-xs group-hover:scale-105 group-hover:shadow-md group-hover:border-brand-500/50 active:scale-95 transition-all duration-200 cursor-pointer"
+                  class="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-xl overflow-hidden shrink-0 border border-surface-200 dark:border-surface-700/80 bg-surface-100 dark:bg-surface-800 shadow-xs group-hover:scale-105 group-hover:shadow-md group-hover:border-brand-500/50 active:scale-95 transition-all duration-200 cursor-pointer"
                   data-sound-hover="pop"
                   title="Hover gambar untuk suara pop!"
                 >
                   <img
-                    src={post.data.ogImage || '/avatar.png'}
+                    src={post.data.coverImage || post.data.ogImage || '/avatar.png'}
                     alt={post.data.title}
                     class="w-full h-full object-cover transition-transform duration-200"
                   />
@@ -473,20 +473,20 @@ const gitGridColumns = [
 
                 <!-- Post Details -->
                 <div class="min-w-0 flex-1">
-                  <div class="flex items-center gap-1.5 mb-1">
-                    <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400">
                       {post.data.milestone || 'Catatan'}
                     </span>
-                    <span class="text-[10px] font-mono text-surface-400 dark:text-surface-500">
+                    <span class="text-[11px] font-mono text-surface-400 dark:text-surface-500">
                       {new Intl.DateTimeFormat('id-ID', { month: 'short', year: 'numeric' }).format(post.data.publishDate)}
                     </span>
                   </div>
                   
-                  <h3 class="text-xs font-bold text-surface-900 dark:text-surface-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition leading-snug line-clamp-2">
+                  <h3 class="text-xs sm:text-[13px] font-bold text-surface-900 dark:text-surface-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition leading-snug line-clamp-2">
                     {post.data.title}
                   </h3>
 
-                  <p class="text-[11px] text-surface-500 dark:text-surface-400 line-clamp-2 mt-1 leading-relaxed">
+                  <p class="text-[11px] sm:text-xs text-surface-500 dark:text-surface-400 line-clamp-2 mt-1.5 leading-relaxed">
                     {post.data.description}
                   </p>
                 </div>
@@ -494,26 +494,6 @@ const gitGridColumns = [
             );
           })}
         </div>
-      </div>
-
-      <!-- Widget 2: BLOG ARCHIVE (Sesuai Referensi Blogspot) -->
-      <div class="rounded-2xl border border-surface-200 dark:border-surface-800 bg-white/70 dark:bg-[#18181b]/70 backdrop-blur-sm p-4 sm:p-5 shadow-sm space-y-3">
-        <h2 class="text-xs font-mono font-bold tracking-widest text-surface-900 dark:text-surface-100 uppercase pb-2 border-b border-surface-100 dark:border-surface-800">
-          ARSIP MAGANG
-        </h2>
-        <ul class="space-y-1.5 text-xs font-mono text-surface-600 dark:text-surface-400">
-          {posts.map((post) => (
-            <li class="flex items-center justify-between py-1 hover:text-brand-600 dark:hover:text-brand-400 transition">
-              <a href={`/blog/${post.id}`} class="flex items-center gap-1.5 truncate flex-1 mr-2" data-sound="click">
-                <span class="text-surface-400">&gt;</span>
-                <span class="truncate">{new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' }).format(post.data.publishDate)}</span>
-              </a>
-              <span class="text-[10px] text-surface-400 bg-surface-100 dark:bg-surface-800 px-1.5 py-0.5 rounded shrink-0">
-                {post.data.milestone || 'Catatan'}
-              </span>
-            </li>
-          ))}
-        </ul>
       </div>
 
     </aside>
