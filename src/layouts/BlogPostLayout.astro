@@ -1,12 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 
-export interface HeadingItem {
-  depth: number;
-  slug: string;
-  text: string;
-}
-
 export interface Props {
   title: string;
   description: string;
@@ -20,7 +14,6 @@ export interface Props {
   readTime: string;
   ogImage?: string;
   coverImage?: string;
-  headings?: HeadingItem[];
 }
 
 const {
@@ -36,7 +29,6 @@ const {
   readTime,
   ogImage,
   coverImage,
-  headings = [],
 } = Astro.props;
 
 const monthMatch = milestone?.match(/\d+/);
@@ -48,9 +40,6 @@ const formattedDate = new Intl.DateTimeFormat('id-ID', {
   month: 'long',
   year: 'numeric',
 }).format(publishDate);
-
-// Filter h2 for Table of Contents (Directly matching screenshot: Subtopik)
-const tocHeadings = headings.filter((h) => h.depth === 2);
 ---
 
 <BaseLayout
@@ -62,7 +51,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
   author={author}
   tags={tags}
   image={ogImage}
-  containerClass="max-w-5xl xl:max-w-6xl"
+  containerClass="max-w-2xl lg:max-w-3xl"
 >
   <div class="relative mx-auto">
     <!-- Top Action Bar (Close / Back Button) -->
@@ -88,140 +77,84 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
       </div>
     </div>
 
-    <!-- Main Content Layout: Left Sidebar TOC + Right Main Article (100% Matching Screenshot Reference) -->
-    <div class="flex flex-col lg:flex-row gap-12 xl:gap-16 items-start">
+    <!-- Main Article Body (Clean, Centered, Distraction-Free Reading Canvas) -->
+    <article class="max-w-2xl mx-auto">
       
-      <!-- Left Column: Minimalist Sticky Table of Contents (Matching Screenshot: CONTENTS 13%) -->
-      {tocHeadings.length > 0 && (
-        <aside class="hidden lg:block w-56 xl:w-64 shrink-0 sticky top-12 space-y-4 select-none">
-          <div>
-            <!-- Header: CONTENTS + Reading Progress Percentage -->
-            <div class="flex items-center justify-between pb-2 border-b border-surface-200 dark:border-surface-800 text-[11px] font-mono tracking-wider uppercase text-surface-400 dark:text-surface-500 mb-3.5">
-              <span>CONTENTS</span>
-              <span id="reading-progress-percent" class="font-semibold text-surface-600 dark:text-surface-300">0%</span>
+      <!-- Header / Meta -->
+      <header class="mb-8">
+        <div class="flex items-center gap-2 mb-3">
+          {milestone && (
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-medium bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300 border border-brand-200 dark:border-brand-800">
+              {milestone}
+            </span>
+          )}
+          <span class="text-xs font-mono text-surface-400">
+            {formattedDate} &bull; {readTime}
+          </span>
+        </div>
+
+        <!-- Main Article Title (H1) -->
+        <h1 class="text-2xl sm:text-3xl lg:text-[34px] font-extrabold tracking-tight text-surface-900 dark:text-surface-50 leading-[1.25] mb-6">
+          {title}
+        </h1>
+
+        <!-- Author Info Row -->
+        <div class="flex items-center justify-between flex-wrap gap-4 py-3 border-y border-surface-200/80 dark:border-surface-800/80 text-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-full overflow-hidden bg-brand-500 shadow-xs">
+              <img src="/avatar.png" alt="Foto Profil" class="w-full h-full object-cover" />
             </div>
-
-            <!-- TOC Links matching screenshot typography -->
-            <nav id="toc-nav" class="space-y-2.5 text-[13px]">
-              {tocHeadings.map((h) => (
-                <a
-                  href={`#${h.slug}`}
-                  data-heading-id={h.slug}
-                  class="toc-link block text-surface-400 dark:text-surface-500 hover:text-surface-900 dark:hover:text-surface-100 transition-colors duration-150 leading-snug font-normal"
-                  data-sound="click"
-                >
-                  {h.text}
-                </a>
-              ))}
-            </nav>
+            <div class="font-medium text-surface-800 dark:text-surface-200">
+              {author} <span class="text-surface-400 font-normal">&bull; {role} ({company})</span>
+            </div>
           </div>
 
-          <div class="pt-6 border-t border-surface-100 dark:border-surface-800/60 text-[11px] font-mono text-surface-400">
-            <span>Tekan <kbd class="px-1 py-0.5 bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded text-[10px]">Esc</kbd> untuk beranda</span>
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-1">
+            {tags.map((tag) => (
+              <span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-surface-100 dark:bg-surface-800 text-surface-500">
+                #{tag}
+              </span>
+            ))}
           </div>
-        </aside>
+        </div>
+      </header>
+
+      <!-- Featured / Cover Image -->
+      {coverImage && (
+        <div class="mb-8 rounded-2xl overflow-hidden border border-surface-200 dark:border-surface-800 shadow-sm bg-surface-100 dark:bg-surface-900">
+          <img
+            src={coverImage}
+            alt={title}
+            class="w-full h-auto max-h-[460px] object-cover"
+          />
+        </div>
       )}
 
-      <!-- Right Column: Main Article Body (Clean, Borderless, Ultra-Modern Reading Canvas) -->
-      <article class="flex-1 min-w-0 max-w-2xl xl:max-w-3xl">
-        
-        <!-- Header / Meta -->
-        <header class="mb-8">
-          <div class="flex items-center gap-2 mb-3">
-            {milestone && (
-              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-medium bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300 border border-brand-200 dark:border-brand-800">
-                {milestone}
-              </span>
-            )}
-            <span class="text-xs font-mono text-surface-400">
-              {formattedDate} &bull; {readTime}
-            </span>
-          </div>
+      <!-- Main Markdown Prose Content -->
+      <div class="prose prose-zinc dark:prose-invert max-w-none text-[15px] sm:text-base leading-[1.8] text-surface-700 dark:text-surface-300 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-surface-900 dark:prose-headings:text-surface-50 prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-p:my-4 prose-p:leading-[1.8] prose-a:text-brand-600 dark:prose-a:text-brand-400 prose-img:rounded-xl">
+        <slot />
+      </div>
 
-          <!-- Main Article Title (H1) -->
-          <h1 class="text-2xl sm:text-3xl lg:text-[34px] font-extrabold tracking-tight text-surface-900 dark:text-surface-50 leading-[1.25] mb-6">
-            {title}
-          </h1>
-
-          <!-- Author Info Row -->
-          <div class="flex items-center justify-between flex-wrap gap-4 py-3 border-y border-surface-200/80 dark:border-surface-800/80 text-xs">
-            <div class="flex items-center gap-2.5">
-              <div class="w-7 h-7 rounded-full overflow-hidden bg-brand-500 shadow-xs">
-                <img src="/avatar.png" alt="Foto Profil" class="w-full h-full object-cover" />
-              </div>
-              <div class="font-medium text-surface-800 dark:text-surface-200">
-                {author} <span class="text-surface-400 font-normal">&bull; {role} ({company})</span>
-              </div>
-            </div>
-
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-1">
-              {tags.map((tag) => (
-                <span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-surface-100 dark:bg-surface-800 text-surface-500">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </header>
-
-        <!-- Featured / Cover Image -->
-        {coverImage && (
-          <div class="mb-8 rounded-2xl overflow-hidden border border-surface-200 dark:border-surface-800 shadow-sm bg-surface-100 dark:bg-surface-900">
-            <img
-              src={coverImage}
-              alt={title}
-              class="w-full h-auto max-h-[460px] object-cover"
-            />
-          </div>
-        )}
-
-        <!-- Mobile TOC Accordion (Visible on small screens only) -->
-        {tocHeadings.length > 0 && (
-          <details class="lg:hidden mb-8 p-3.5 rounded-xl border border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-950/50">
-            <summary class="font-mono text-xs font-semibold text-surface-700 dark:text-surface-300 cursor-pointer select-none">
-              📑 CONTENTS ({tocHeadings.length} Subtopik)
-            </summary>
-            <nav class="mt-2.5 space-y-1 pl-2 border-l-2 border-brand-500 text-xs">
-              {tocHeadings.map((h) => (
-                <a
-                  href={`#${h.slug}`}
-                  class="block py-1 text-surface-600 dark:text-surface-400 hover:text-brand-600 dark:hover:text-brand-400 transition"
-                  data-sound="click"
-                >
-                  {h.text}
-                </a>
-              ))}
-            </nav>
-          </details>
-        )}
-
-        <!-- Main Markdown Prose Content (Minimalist, Spacious, Exactly Matching veryyyy.com) -->
-        <div class="prose prose-zinc dark:prose-invert max-w-none text-[15px] sm:text-base leading-[1.8] text-surface-700 dark:text-surface-300 prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-surface-900 dark:prose-headings:text-surface-50 prose-h2:text-xl sm:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:scroll-mt-16 prose-p:my-4 prose-p:leading-[1.8] prose-a:text-brand-600 dark:prose-a:text-brand-400 prose-img:rounded-xl">
-          <slot />
-        </div>
-
-        <!-- Article Footer Share / Copy -->
-        <div class="mt-14 pt-8 border-t border-surface-200 dark:border-surface-800 flex items-center justify-between flex-wrap gap-4 text-xs font-mono text-surface-400">
-          <span>
-            Refleksi magang oleh <strong class="text-surface-800 dark:text-surface-200">{author}</strong>
-          </span>
-          <button 
-            id="copy-link-btn" 
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-100 dark:bg-surface-800 hover:bg-surface-200 dark:hover:bg-surface-700 text-surface-700 dark:text-surface-300 transition active:scale-95"
-            data-sound="pop"
-          >
-            <span>Salin Tautan Artikel</span>
-          </button>
-        </div>
-      </article>
-
-    </div>
+      <!-- Article Footer Share / Copy -->
+      <div class="mt-14 pt-8 border-t border-surface-200 dark:border-surface-800 flex items-center justify-between flex-wrap gap-4 text-xs font-mono text-surface-400">
+        <span>
+          Refleksi magang oleh <strong class="text-surface-800 dark:text-surface-200">{author}</strong>
+        </span>
+        <button 
+          id="copy-link-btn" 
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-100 dark:bg-surface-800 hover:bg-surface-200 dark:hover:bg-surface-700 text-surface-700 dark:text-surface-300 transition active:scale-95 cursor-pointer"
+          data-sound="pop"
+        >
+          <span>Salin Tautan Artikel</span>
+        </button>
+      </div>
+    </article>
   </div>
 
-  <!-- ScrollSpy & Dynamic Reading Progress Percentage -->
+  <!-- Keyboard Shortcuts & Copy Script -->
   <script>
-    function setupTOCAndShortcuts() {
+    function setupShortcuts() {
       const backBtn = document.getElementById('btn-back-chronicles');
       const backUrl = backBtn?.getAttribute('data-back-url') || '/';
       const monthNum = backBtn?.getAttribute('data-month-num') || '1';
@@ -237,61 +170,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
         }
       });
 
-      // 2. Dynamic Reading Progress Percentage (CONTENTS XX%)
-      const progressEl = document.getElementById('reading-progress-percent');
-      function updateReadingProgress() {
-        if (!progressEl) return;
-        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-        if (totalHeight <= 0) {
-          progressEl.textContent = '100%';
-          return;
-        }
-        const pct = Math.min(100, Math.max(0, Math.round((window.scrollY / totalHeight) * 100)));
-        progressEl.textContent = `${pct}%`;
-      }
-      window.addEventListener('scroll', updateReadingProgress, { passive: true });
-      updateReadingProgress();
-
-      // 3. ScrollSpy: Highlight active heading in TOC (Matching Screenshot: Bold Black vs Muted Gray)
-      const tocLinks = document.querySelectorAll('.toc-link');
-      if (tocLinks.length === 0) return;
-
-      const headingElements: HTMLElement[] = [];
-      tocLinks.forEach((link) => {
-        const id = link.getAttribute('data-heading-id');
-        if (id) {
-          const el = document.getElementById(id);
-          if (el) headingElements.push(el);
-        }
-      });
-
-      function onScroll() {
-        const scrollPosition = window.scrollY + 120;
-        let activeId = '';
-
-        for (let i = 0; i < headingElements.length; i++) {
-          const heading = headingElements[i];
-          if (heading.offsetTop <= scrollPosition) {
-            activeId = heading.id;
-          }
-        }
-
-        tocLinks.forEach((link) => {
-          const id = link.getAttribute('data-heading-id');
-          if (id === activeId) {
-            link.classList.add('text-surface-900', 'dark:text-surface-100', 'font-bold');
-            link.classList.remove('text-surface-400', 'dark:text-surface-500', 'font-normal');
-          } else {
-            link.classList.remove('text-surface-900', 'dark:text-surface-100', 'font-bold');
-            link.classList.add('text-surface-400', 'dark:text-surface-500', 'font-normal');
-          }
-        });
-      }
-
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-
-      // 4. Copy link button
+      // 2. Copy link button
       const copyBtn = document.getElementById('copy-link-btn');
       copyBtn?.addEventListener('click', () => {
         navigator.clipboard.writeText(window.location.href);
@@ -303,7 +182,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
       });
     }
 
-    setupTOCAndShortcuts();
-    document.addEventListener('astro:after-swap', setupTOCAndShortcuts);
+    setupShortcuts();
+    document.addEventListener('astro:after-swap', setupShortcuts);
   </script>
 </BaseLayout>
