@@ -9,7 +9,8 @@ milestone: "Bulan 02"
 readTime: "7 min read"
 tags: ["UI/UX", "Usability Testing", "Prototyping", "Design Handoff"]
 featured: true
-ogImage: "/images/posts/b2-thumb.svg"
+coverImage: "/images/posts/bulan-2.jpg"
+ogImage: "/images/posts/bulan-2.jpg"
 ---
 
 Memasuki bulan kedua magang, fokus bergeser dari merapikan komponen dasar ke validasi langsung bersama pengguna. Ada kepuasan tersendiri melihat ide yang awalnya hanya coretan di buku catatan kini diuji oleh orang lain.
